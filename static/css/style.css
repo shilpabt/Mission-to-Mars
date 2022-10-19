@@ -1,0 +1,26 @@
+.dataframe {
+    background-color:rgb(67, 173, 200); 
+    color:rgb(14, 15, 15);
+    border-collapse: collapse; 
+    border: 1px solid #5e4ce5;
+
+}
+table.dataframe
+{
+    background-color: rgb(74, 173, 218);
+}
+
+body {
+    margin: 5px;
+    padding-bottom: 70px;
+    background-color: rgb(206, 216, 157);
+ }
+
+ button {
+    background-color:rgb(84, 144, 213);
+    color: #f3f3ef;
+    font-size: 24px;
+    font-style: bold;
+    border-radius: 12px;
+
+ }

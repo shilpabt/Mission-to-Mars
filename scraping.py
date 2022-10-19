@@ -10,7 +10,8 @@ def scrape_all():
     
 #Setup Splinter
     executable_path = {'executable_path': ChromeDriverManager().install()}
-    browser = Browser('chrome', **executable_path, headless=False)
+    print(executable_path)
+    browser = Browser('chrome', **executable_path, headless=True)
 
     #we're going to set our news title and paragraph variables (remember, this function will return two values)
     news_title, news_paragraph = mars_news(browser)
@@ -21,11 +22,13 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
-        "last_modified": dt.datetime.now()
+        "last_modified": dt.datetime.now(),
+        "hemispheres" : hemispheres(browser)
     }
 
+
     # Stop webdriver and return data
-    browser.quit()
+    #browser.quit()
     return data
 
 
@@ -105,6 +108,32 @@ def mars_facts():
    
     # Convert dataframe into HTML format, add bootstrap
     return df.to_html(classes="table table-striped")
+
+
+def hemispheres(browser):
+   # browser = Browser('chrome', **executable_path, headless=False)
+    url = 'https://marshemispheres.com/'
+    browser.visit(url)
+
+    hemisphere_image_urls = []
+
+
+    html = browser.html
+    news_soup = soup(html, 'html.parser')
+    slide_elem = news_soup.select_one('div.list_text')
+    news_title= browser.find_by_css('a.itemLink.product-item h3')
+
+
+    for n in range(len(news_title)-1):
+        hemisphere={}
+        browser.find_by_css('a.itemLink.product-item h3')[n].click() 
+        image_jpg = browser.links.find_by_text("Sample").first
+        hemisphere["img_url"] = image_jpg["href"]
+        hemisphere["title"] = browser.find_by_css("h2.title").text
+        hemisphere_image_urls.append(hemisphere)
+        browser.back()
+
+    return hemisphere_image_urls    
 
 if __name__ == "__main__":
 
